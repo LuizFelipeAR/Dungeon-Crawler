@@ -1,5 +1,5 @@
 # Dungeon-Crawler
-** Contribuidores: 
+### Contribuidores: 
 - Luiz Felipe Araújo
 - Ricardo Kenji Hidaka
 - Pedro Arthur Souza
