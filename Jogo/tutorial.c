@@ -1,6 +1,9 @@
 #include <stdio.h>
 //escrever o tutorial
+//esse codigo todo dps vai virar uma funcao e vai ser anexada ao menu desgraaaaaaaaaaaaaaaaaaaaaaaaaaaaca
 int main(){
+int escolha;
+while(1){
 
 printf("TUTORIAL DOS CONTROLES:\n");
 printf("W - Andar para cima\n");
@@ -30,6 +33,22 @@ printf("L Escada: leva o jogador para a próxima fase\n");
 printf("X Monstro Tipo 1\n");
 printf("Y Monstro Tipo 2\n");
 printf("Z Boss Final\n");
+
+printf("\n\nSe deseja voltar ao menu Digite 1\n");
+scanf("%d",&escolha);
+
+switch (escolha)
+{
+case 1:
+    printf("\nSAINDO...");
+    break;
+default:
+    break;
+}
+if(escolha){
+    break;
+}
+}    
 
 
 return 0;
