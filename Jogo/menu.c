@@ -12,8 +12,9 @@ printf("Bem Vindo ao DUNGEON CRAWLER!\n");
 
 printf("1. Jogar - Inicia o jogo a partir da vila\n");
 printf("2. Tutorial - Exibe a historia do jogo, significado de cada simbolo e controles\n");
-printf("3. Sair");
+printf("3. Sair\n");
 
+printf("Escolha uma opção: ");
 scanf("%d",&opcao);
 
   switch(opcao) {
