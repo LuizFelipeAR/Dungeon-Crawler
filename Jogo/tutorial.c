@@ -29,7 +29,7 @@ printf("= Porta aberta: o jogador pode passar\n");
 printf("L Escada: leva o jogador para a próxima fase\n");
 printf("X Monstro Tipo 1\n");
 printf("Y Monstro Tipo 2\n");
-printf("Z Boss Final");
+printf("Z Boss Final\n");
 
 
 return 0;
