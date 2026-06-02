@@ -4,6 +4,7 @@ int main(){
 
 int opcao;
 
+system("cls||clear");
 
 while(1){
 
@@ -31,6 +32,7 @@ scanf("%d",&opcao);
             break;
         default:
             printf("Opção inválida! Tente novamente.\n");
+            system("cls||clear");
     }
 
 if(opcao == 3){
