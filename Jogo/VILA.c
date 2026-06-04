@@ -1,6 +1,5 @@
 #include <stdio.h>
-
-#include <stdio.h>
+#include <stdlib.h>
 
 #define MAX 25
 
@@ -20,14 +19,15 @@ const char *MAPA_VILA[10] = {
 char terreno[MAX][MAX];
 int altura, largura;
 
-void carregar_fase(void) {
+void carregar_vila(void) {
     for (int i = 0; i < altura; i++)
         for (int j = 0; j < largura; j++)
             terreno[i][j] = MAPA_VILA[i][j];
 }
 
 int jogador_y = 1, jogador_x = 1; // Posicao do Jogador
-void desenhar_mapa(char entrada) {
+void desenhar_vila(char entrada) {
+    system("cls"); // Limpa a tela para que nao fique com muitos mapas desenhados  
     for (int i = 0; i < altura; i++) {
         for (int j = 0; j < largura; j++) {
            if (i == jogador_y && j == jogador_x){
@@ -63,10 +63,10 @@ void mover(int dx, int dy){
 int main(void) {
     altura = 10;            
     largura = 10;
-    carregar_fase();   
+    carregar_vila();   
     char entrada = 'd';
     while(1){     
-        desenhar_mapa(entrada);
+        desenhar_vila(entrada);
         printf("Movimento (WASD): ");
         scanf(" %c", &entrada);
         if (entrada == 'w') {
