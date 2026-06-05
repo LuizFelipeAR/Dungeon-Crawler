@@ -12,7 +12,7 @@ const char *MAPA_VILA[10] = {
     "*    N   *",
     "*        *",
     "*        *",
-    "*       L*",
+    "*        *",
     "**********"
 };
 
@@ -21,7 +21,6 @@ int altura, largura;
 int jogador_linha = 1, jogador_coluna = 1; // Posicao do Jogador
 char jogador_dir = '>'; // Direcao que o jogador olha
 int arma = 0; // 0 = nenhuma ainda; 1 = espada, 2 = arco, 3 = cajado
-int carregarmapa = 0; // Ver qual fase esta sendo carregada
 
 void carregar_vila(void) {
     for (int i = 0; i < altura; i++)
@@ -42,47 +41,11 @@ void desenhar_vila(void) {
     }
 }
 
-const char *MAPA_1[10] = {
-    "**********",
-    "*        *",
-    "*        *",
-    "*        *",
-    "*        *",
-    "*        *",
-    "*        *",
-    "*        *",
-    "*        *",
-    "**********"
-}; // Mapa 1
-
-char terreno[MAX][MAX]; // Matriz para armazenar o mapa atual
-int altura, largura;
-
-void carregar_mapa1(void) {
-    int i, j;
-    for (i = 0; i < altura; i++)
-        for (j = 0; j < largura; j++)
-            terreno[i][j] = MAPA_1[i][j];
-} // Função para carregar o mapa da vila na matriz terreno
-
-void desenhar_mapa1(void) {
-    system("cls");
-    for (int i = 0; i < altura; i++) {
-        for (int j = 0; j < largura; j++) {
-            if (i == jogador_linha && j == jogador_coluna)
-                printf("%c", jogador_dir);
-            else
-                printf("%c", terreno[i][j]);
-        }
-        printf("\n");
-    }
-} // Função para desenhar o mapa
-
 void mover(int dx, int dy, char dir) {
     jogador_dir = dir; // Vira mesmo batendo na parede
     int novo_linha = jogador_linha + dy;
     int novo_coluna = jogador_coluna + dx;
-    if (terreno[novo_linha][novo_coluna] != '*' && terreno[novo_linha][novo_coluna] != 'N' && terreno[novo_linha][novo_coluna] != 'L') {
+    if (terreno[novo_linha][novo_coluna] != '*' && terreno[novo_linha][novo_coluna] != 'N') {
         jogador_coluna = novo_coluna;
         jogador_linha = novo_linha;
     }
@@ -115,18 +78,15 @@ void interagir(void) {
 
         arma = escolha; // So chega aqui quando a escolha e valida
     }
-    if (terreno[frente_linha][frente_coluna] == 'L') {
-        carregarmapa++;
-    }
 }
 
 int main(void) {
     altura = 10;
     largura = 10;
-    carregar_vila();     
+    carregar_vila();
 
     char entrada;
-    while (carregarmapa == 0) {
+    while (1) {
         desenhar_vila();
         printf("Movimento (WASD): ");
         scanf(" %c", &entrada);
@@ -137,22 +97,7 @@ int main(void) {
         else if (entrada == 'i') interagir(); //A tecla de interacao
         else break;
     }
-
-    carregar_mapa1();
-    jogador_linha = 1; // resetando a posicao linha
-    jogador_coluna = 1; // resetando a posicao coluna  
     
-    while (carregarmapa == 1) {
-        desenhar_mapa1();  
-        printf("Movimento (WASD): ");
-        scanf(" %c", &entrada);
-        if (entrada == 'w')      mover(0, -1, '^');
-        else if (entrada == 's') mover(0,  1, 'v');
-        else if (entrada == 'a') mover(-1, 0, '<');
-        else if (entrada == 'd') mover( 1, 0, '>');
-        else if (entrada == 'i') interagir(); //A tecla de interacao
-        else break;
-    }
     return 0;
     }
 
