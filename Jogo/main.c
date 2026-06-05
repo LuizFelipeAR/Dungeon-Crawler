@@ -2,8 +2,6 @@
 #include <stdlib.h>
 
 #define MAX 25
-#define AVANCOU 0   // ALTERACAO: codigo de retorno -> jogador pegou a escada
-#define SAIU    1   // ALTERACAO: codigo de retorno -> jogador encerrou
 
 const char *MAPA_VILA[10] = {
     "**********",
@@ -170,21 +168,20 @@ int jogar_andar(void) {
         else if (entrada == 'a') mover(-1, 0, '<');
         else if (entrada == 'd') mover( 1, 0, '>');
         else if (entrada == 'i') {                 // ALTERACAO
-            if (interagir() == 1) return AVANCOU;  // ALTERACAO: escada -> sobe de andar
+            if (interagir() == 1) return 1;  // ALTERACAO: escada -> sobe de andar
         }
-        else return SAIU;                          // ALTERACAO: era break, agora retorna SAIU
+        else return 0;                          // ALTERACAO: era break, agora retorna 0
     }
 }
 
 int main(void) {
-    int andar = 0;                          // ALTERACAO: 0 = Vila, depois 1, 2, 3
-    while (andar <= 3) {                     // ALTERACAO: laco diretor do jogo
-        carregar_andar(andar);               // ALTERACAO: carrega o andar atual
-        int resultado = jogar_andar();        // ALTERACAO: joga e ve o que aconteceu
-        if (resultado == AVANCOU) andar++;    // ALTERACAO: pegou escada -> proximo andar
-        else break;                           // ALTERACAO: SAIU -> encerra
+    int andar = 0;
+    while (andar <= 3) {
+        carregar_andar(andar);
+        if (jogar_andar() == 1) andar++;   // pegou escada -> proximo andar
+        else break;                        // saiu -> encerra
     }
-    if (andar > 3) printf("Voce zerou o jogo!\n"); // ALTERACAO
+    if (andar > 3) printf("Voce zerou o jogo!\n");
 
     return 0;
 }
