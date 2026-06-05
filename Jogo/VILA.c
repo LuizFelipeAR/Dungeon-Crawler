@@ -12,7 +12,7 @@ const char *MAPA_VILA[10] = {
     "*    N   *",
     "*        *",
     "*        *",
-    "*        *",
+    "*       L*",
     "**********"
 };
 
@@ -45,7 +45,7 @@ void mover(int dx, int dy, char dir) {
     jogador_dir = dir; // Vira mesmo batendo na parede
     int novo_linha = jogador_linha + dy;
     int novo_coluna = jogador_coluna + dx;
-    if (terreno[novo_linha][novo_coluna] != '*' && terreno[novo_linha][novo_coluna] != 'N') {
+    if (terreno[novo_linha][novo_coluna] != '*' && terreno[novo_linha][novo_coluna] != 'N' && terreno[novo_linha][novo_coluna] != 'L') {
         jogador_coluna = novo_coluna;
         jogador_linha = novo_linha;
     }
