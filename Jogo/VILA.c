@@ -12,7 +12,7 @@ const char *MAPA_VILA[10] = {
     "*    N   *",
     "*        *",
     "*        *",
-    "*        *",
+    "*      L *",
     "**********"
 };
 
@@ -45,7 +45,7 @@ void mover(int dx, int dy, char dir) {
     jogador_dir = dir; // Vira mesmo batendo na parede
     int novo_linha = jogador_linha + dy;
     int novo_coluna = jogador_coluna + dx;
-    if (terreno[novo_linha][novo_coluna] != '*' && terreno[novo_linha][novo_coluna] != 'N') {
+    if (terreno[novo_linha][novo_coluna] != '*' && terreno[novo_linha][novo_coluna] != 'N' && terreno[novo_linha][novo_coluna] != 'L') {
         jogador_coluna = novo_coluna;
         jogador_linha = novo_linha;
     }
@@ -61,22 +61,27 @@ void interagir(void) {
     else if (jogador_dir == '>') frente_coluna++;
 
     if (terreno[frente_linha][frente_coluna] == 'N') {
-        int escolha = 0;
+    int escolha = 0;
 
-        while (escolha < 1 || escolha > 3) { // Repete enquanto for invalida
-            printf("\n=== NPC ===\n");
-            printf("Escolha sua arma:\n");
-            printf("1 - Espada\n");
-            printf("2 - Arco e Flecha\n");
-            printf("3 - Cajado\n");
-            printf("Opcao: ");
-            scanf(" %d", &escolha);
+    while (escolha < 1 || escolha > 3) { // Repete enquanto for invalida
+        printf("\n=== NPC ===\n");
+        printf("Escolha sua arma:\n");
+        printf("1 - Espada\n");
+        printf("2 - Arco e Flecha\n");
+        printf("3 - Cajado\n");
+        printf("Opcao: ");
+        scanf(" %d", &escolha);
 
-            if (escolha < 1 || escolha > 3)
-                printf("Opcao invalida! Tente de novo.\n");
-        }
+        if (escolha < 1 || escolha > 3)
+            printf("Opcao invalida! Tente de novo.\n");
+    }
 
         arma = escolha; // So chega aqui quando a escolha e valida
+    }
+
+    else if (terreno[frente_linha][frente_coluna] == 'L') {
+        printf("\n>> Voce desceu a escada!\n");
+        printf("Iniciando o MAPA 1!\n");
     }
 }
 
