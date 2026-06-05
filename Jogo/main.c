@@ -20,12 +20,12 @@ const char *MAPA_ANDAR1[10] = {
     "**********",
     "*        *",
     "*        *",
+    "*   k    *",
     "*        *",
     "*        *",
     "*        *",
     "*        *",
-    "*        *",
-    "*        *",
+    "*      L *",
     "**********"
 };
 
@@ -156,6 +156,26 @@ int interagir(void) { // ALTERACAO: era void, agora retorna int (avisa se desceu
     return 0;           // ALTERACAO: nao havia nada na frente
 }
 
+int atacar(void) {
+    int dl; // direcao do ataque (frente do jogador)
+    int dc; // direcao do ataque (frente do jogador)
+
+    if (arma == 3) {   // cajado: 8 celulas ao redor
+        for (dl = -1; dl <= 1; dl++) {
+            for (dc = -1; dc <= 1; dc++) {
+                if (dl == 0 && dc == 0) continue;   // pula a propria celula
+
+                int alvo_linha = jogador_linha + dl;
+                int alvo_coluna = jogador_coluna + dc;
+
+                if (terreno[alvo_linha][alvo_coluna] == 'k')
+                    terreno[alvo_linha][alvo_coluna] = ' ';   // destroi a caixa
+            }
+        }
+    }
+    return 0;   // 0 = ataque normal; 1 sera o boss derrotado (Andar 3)
+}
+
 // ALTERACAO: funcao nova -> roda o laco de um andar e devolve o que aconteceu
 int jogar_andar(void) {
     char entrada;
@@ -169,6 +189,9 @@ int jogar_andar(void) {
         else if (entrada == 'd') mover( 1, 0, '>');
         else if (entrada == 'i') {                 // ALTERACAO
             if (interagir() == 1) return 1;  // ALTERACAO: escada -> sobe de andar
+        }
+        else if (entrada == 'o') {
+            if (atacar() == 1) return 1;   // boss morto -> encerra o andar (vitoria)
         }
         else return 0;                          // ALTERACAO: era break, agora retorna 0
     }
