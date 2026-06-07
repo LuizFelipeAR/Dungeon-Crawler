@@ -22,8 +22,8 @@ const char *MAPA_ANDAR1[10] = {
     "*   kkk  *",
     "*   kkk  *",
     "*        *",
-    "*        *",
-    "*        *",
+    "*@       *",
+    "*****D****",
     "*        *",
     "*      L *",
     "**********"
@@ -80,6 +80,7 @@ int altura, largura;
 int jogador_linha = 1, jogador_coluna = 1; // Posicao do Jogador
 char jogador_dir = '>'; // Direcao que o jogador olha
 int arma = 0; // 0 = nenhuma ainda; 1 = espada, 2 = arco, 3 = cajado
+int tem_chave = 0;   // 0 = nao tem; 1 = tem uma chave
 
 // ALTERACAO: carregar_vila virou carregar_andar(int andar) -> escolhe o mapa
 void carregar_andar(int andar) {
@@ -96,6 +97,7 @@ void carregar_andar(int andar) {
     jogador_linha = 1;                                 // ALTERACAO: reposiciona ao iniciar o andar
     jogador_coluna = 1;                                // ALTERACAO
     jogador_dir = '>';                                 // ALTERACAO
+    tem_chave = 0;
 }
 
 void desenhar_mapa(void) { // ALTERACAO: desenhar_vila virou desenhar_mapa
@@ -115,7 +117,11 @@ void mover(int dx, int dy, char dir) {
     jogador_dir = dir; // Vira mesmo batendo na parede
     int novo_linha = jogador_linha + dy;
     int novo_coluna = jogador_coluna + dx;
-    if (terreno[novo_linha][novo_coluna] != '*' && terreno[novo_linha][novo_coluna] != 'N' && terreno[novo_linha][novo_coluna] != 'L' && terreno[novo_linha][novo_coluna] != 'k') {
+    if (terreno[novo_linha][novo_coluna] != '*' && 
+        terreno[novo_linha][novo_coluna] != 'N' && 
+        terreno[novo_linha][novo_coluna] != 'L' && 
+        terreno[novo_linha][novo_coluna] != 'k' && 
+        terreno[novo_linha][novo_coluna] != 'D') {
         jogador_coluna = novo_coluna;
         jogador_linha = novo_linha;
     }
@@ -153,7 +159,22 @@ int interagir(void) { // ALTERACAO: era void, agora retorna int (avisa se desceu
     else if (terreno[frente_linha][frente_coluna] == 'L') {
         return 1;       // ALTERACAO: sinaliza que deve descer a escada
     }
-    return 0;           // ALTERACAO: nao havia nada na frente
+
+    else if (terreno[frente_linha][frente_coluna] == '@') {   // chave
+        terreno[frente_linha][frente_coluna] = ' ';   // pega a chave (some do mapa)
+        tem_chave = 1;
+        return 0;
+    }
+
+    else if (terreno[frente_linha][frente_coluna] == 'D') {   // porta fechada
+        if (tem_chave == 1) {
+            terreno[frente_linha][frente_coluna] = '=';   // abre a porta
+            tem_chave = 0;                                // consome a chave
+        }
+        return 0;
+    }
+
+    return 0;   // interagiu com algo que nao tem acao, ou nada na frente
 }
 
 int atacar(void) {
