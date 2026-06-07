@@ -115,7 +115,7 @@ void mover(int dx, int dy, char dir) {
     jogador_dir = dir; // Vira mesmo batendo na parede
     int novo_linha = jogador_linha + dy;
     int novo_coluna = jogador_coluna + dx;
-    if (terreno[novo_linha][novo_coluna] != '*' && terreno[novo_linha][novo_coluna] != 'N' && terreno[novo_linha][novo_coluna] != 'L') {
+    if (terreno[novo_linha][novo_coluna] != '*' && terreno[novo_linha][novo_coluna] != 'N' && terreno[novo_linha][novo_coluna] != 'L' && terreno[novo_linha][novo_coluna] != 'k') {
         jogador_coluna = novo_coluna;
         jogador_linha = novo_linha;
     }
@@ -161,32 +161,47 @@ int atacar(void) {
     int dc; // direcao do ataque (frente do jogador)
 
     if (arma == 1) {   // espada: retangulo 3x2 a frente
-    for (dl = 1; dl <= 2; dl++) {          // dl = profundidade (1 e 2 a frente)
-        for (dc = -1; dc <= 1; dc++) {     // dc = largura (3)
-            int alvo_linha, alvo_coluna;
+        for (dl = 1; dl <= 2; dl++) {          // dl = profundidade (1 e 2 a frente)
+            for (dc = -1; dc <= 1; dc++) {     // dc = largura (3)
+                int alvo_linha, alvo_coluna;
 
-            if (jogador_dir == '^') {            // cima
-                alvo_linha  = jogador_linha - dl;
-                alvo_coluna = jogador_coluna + dc;
+                if (jogador_dir == '^') {            // cima
+                    alvo_linha  = jogador_linha - dl;
+                    alvo_coluna = jogador_coluna + dc;
+                }
+                else if (jogador_dir == 'v') {       // baixo
+                    alvo_linha  = jogador_linha + dl;
+                    alvo_coluna = jogador_coluna + dc;
+                }
+                else if (jogador_dir == '<') {       // esquerda
+                    alvo_linha  = jogador_linha + dc;
+                    alvo_coluna = jogador_coluna - dl;
+                }
+                else {                               // direita '>'
+                    alvo_linha  = jogador_linha + dc;
+                    alvo_coluna = jogador_coluna + dl;
+                }
+
+                if (terreno[alvo_linha][alvo_coluna] == 'k')
+                    terreno[alvo_linha][alvo_coluna] = ' ';
             }
-            else if (jogador_dir == 'v') {       // baixo
-                alvo_linha  = jogador_linha + dl;
-                alvo_coluna = jogador_coluna + dc;
-            }
-            else if (jogador_dir == '<') {       // esquerda
-                alvo_linha  = jogador_linha + dc;
-                alvo_coluna = jogador_coluna - dl;
-            }
-            else {                               // direita '>'
-                alvo_linha  = jogador_linha + dc;
-                alvo_coluna = jogador_coluna + dl;
-            }
+        }
+    }   
+
+    else if (arma == 2) {   // arco
+        for (dl = 1; dl <= 4; dl++) {
+            int alvo_linha = jogador_linha;    // padrao: mesma do jogador
+            int alvo_coluna = jogador_coluna;  // padrao: mesma do jogador
+
+            if (jogador_dir == '^')      alvo_linha  -= dl;   // so mexe na linha
+            else if (jogador_dir == 'v') alvo_linha  += dl;   // so mexe na linha
+            else if (jogador_dir == '<') alvo_coluna -= dl;   // so mexe na coluna
+            else                         alvo_coluna += dl;   // so mexe na coluna
 
             if (terreno[alvo_linha][alvo_coluna] == 'k')
                 terreno[alvo_linha][alvo_coluna] = ' ';
         }
     }
-}
 
     else if (arma == 3) {   // cajado: 8 celulas ao redor
         for (dl = -1; dl <= 1; dl++) {
