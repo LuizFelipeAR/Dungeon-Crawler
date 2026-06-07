@@ -18,10 +18,10 @@ const char *MAPA_VILA[10] = {
 
 const char *MAPA_ANDAR1[10] = {
     "**********",
+    "*    kkk *",
+    "*    kkk *",
     "*        *",
-    "*   kkk  *",
-    "*   kkk  *",
-    "*        *",
+    "*      # *",
     "*@       *",
     "*****D****",
     "*        *",
@@ -80,7 +80,8 @@ int altura, largura;
 int jogador_linha = 1, jogador_coluna = 1; // Posicao do Jogador
 char jogador_dir = '>'; // Direcao que o jogador olha
 int arma = 0; // 0 = nenhuma ainda; 1 = espada, 2 = arco, 3 = cajado
-int tem_chave = 0;   // 0 = nao tem; 1 = tem uma chave
+int tem_chave = 0;   // 0 = nao tem; 1 = tem uma chave`
+int vidas = 3;   // vidas da partida (NAO zerar no carregar_andar)
 
 // ALTERACAO: carregar_vila virou carregar_andar(int andar) -> escolhe o mapa
 void carregar_andar(int andar) {
@@ -101,6 +102,7 @@ void carregar_andar(int andar) {
 }
 
 void desenhar_mapa(void) { // ALTERACAO: desenhar_vila virou desenhar_mapa
+    // Desenhar o Mapa
     system("cls");
     for (int i = 0; i < altura; i++) {
         for (int j = 0; j < largura; j++) {
@@ -111,20 +113,36 @@ void desenhar_mapa(void) { // ALTERACAO: desenhar_vila virou desenhar_mapa
         }
         printf("\n");
     }
+    // Desenhar HUD
+    printf("Vidas: ");
+    for (int v = 0; v < vidas; v++){
+        printf("<3 ");
+    }
+    printf("\n");
+    printf("Arma: ");
+    if (arma == 1)      printf("Espada  =={======-\n");
+    else if (arma == 2) printf("Arco    )))>----->\n");
+    else if (arma == 3) printf("Cajado  ========(*)\n");
+    else                printf("Nenhuma\n");    
 }
 
-void mover(int dx, int dy, char dir) {
-    jogador_dir = dir; // Vira mesmo batendo na parede
+int mover(int dx, int dy, char dir) {
+    jogador_dir = dir;
     int novo_linha = jogador_linha + dy;
     int novo_coluna = jogador_coluna + dx;
-    if (terreno[novo_linha][novo_coluna] != '*' && 
-        terreno[novo_linha][novo_coluna] != 'N' && 
-        terreno[novo_linha][novo_coluna] != 'L' && 
-        terreno[novo_linha][novo_coluna] != 'k' && 
+
+    if (terreno[novo_linha][novo_coluna] != '*' &&
+        terreno[novo_linha][novo_coluna] != 'N' &&
+        terreno[novo_linha][novo_coluna] != 'L' &&
+        terreno[novo_linha][novo_coluna] != 'k' &&
         terreno[novo_linha][novo_coluna] != 'D') {
         jogador_coluna = novo_coluna;
         jogador_linha = novo_linha;
+
+        if (terreno[jogador_linha][jogador_coluna] == '#')   // pisou no espinho
+            return 1;   // avisa: levei dano
     }
+    return 0;   // nada aconteceu
 }
 
 int interagir(void) { // ALTERACAO: era void, agora retorna int (avisa se desceu a escada)
@@ -241,16 +259,21 @@ int atacar(void) {
 }
 
 // ALTERACAO: funcao nova -> roda o laco de um andar e devolve o que aconteceu
-int jogar_andar(void) {
+int jogar_andar(int andar) {
     char entrada;
+    int dano;
+
     while (1) {
         desenhar_mapa(); // ALTERACAO: nome novo
         printf("Movimento (WASD): ");
         scanf(" %c", &entrada);
-        if (entrada == 'w')      mover(0, -1, '^');
-        else if (entrada == 's') mover(0,  1, 'v');
-        else if (entrada == 'a') mover(-1, 0, '<');
-        else if (entrada == 'd') mover( 1, 0, '>');
+
+        dano = 0; // reset do dano a cada movimento
+
+        if (entrada == 'w')      dano = mover(0, -1, '^');
+        else if (entrada == 's') dano = mover(0,  1, 'v');
+        else if (entrada == 'a') dano = mover(-1, 0, '<');
+        else if (entrada == 'd') dano = mover( 1, 0, '>');
         else if (entrada == 'i') {                 // ALTERACAO
             if (interagir() == 1) return 1;  // ALTERACAO: escada -> sobe de andar
         }
@@ -258,6 +281,12 @@ int jogar_andar(void) {
             if (atacar() == 1) return 1;   // boss morto -> encerra o andar (vitoria)
         }
         else return 0;                          // ALTERACAO: era break, agora retorna 0
+
+        if (dano == 1) {               // pisou no espinho
+            vidas--;
+            if (vidas <= 0) return 2;    // game over
+            carregar_andar(andar);       // reinicia a fase atual
+        }
     }
 }
 
@@ -265,10 +294,19 @@ int main(void) {
     int andar = 0;
     while (andar <= 3) {
         carregar_andar(andar);
-        if (jogar_andar() == 1) andar++;   // pegou escada -> proximo andar
-        else break;                        // saiu -> encerra
-    }
-    if (andar > 3) printf("Voce zerou o jogo!\n");
+        int resultado = jogar_andar(andar);
 
+        if (resultado == 1) andar++;   // pegou escada -> proximo andar
+
+        else if (resultado == 2) {
+            printf("\n=== GAME OVER ===\n");
+            break;
+        }     // saiu -> encerra
+
+        else break;
+    }
+
+    if (andar > 3) printf("Voce zerou o jogo!\n");
+    
     return 0;
 }
