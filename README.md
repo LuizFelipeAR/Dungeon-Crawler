@@ -23,7 +23,18 @@ O jogador inicia sua jornada em uma pequena vila, onde deverá escolher uma arma
 
 ## 🎮 História
 
-Six seven
+### A Última Jornada do Herói
+
+O Rei Demônio ameaça o reino mais uma vez.
+
+Após uma longa jornada com sua equipe, o Herói Escolhido chegou à marmorra do inimigo. Seus companheiros ficaram para trás, e agora ele deve seguir sozinho.
+
+O Herói precisa derrotar monstros para então...
+
+No último andar, o Rei Demônio enfrentar.
+
+Derrote-o e salve o reino!
+
 
 ---
 
