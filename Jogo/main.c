@@ -103,7 +103,7 @@ void carregar_andar(int andar) {
 
 void desenhar_mapa(void) { // ALTERACAO: desenhar_vila virou desenhar_mapa
     // Desenhar o Mapa
-    system("cls");
+    system("cls||clear");
     for (int i = 0; i < altura; i++) {
         for (int j = 0; j < largura; j++) {
             if (i == jogador_linha && j == jogador_coluna)
