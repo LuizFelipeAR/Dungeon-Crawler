@@ -19,8 +19,8 @@ const char *MAPA_VILA[10] = {
 const char *MAPA_ANDAR1[10] = {
     "**********",
     "*        *",
-    "*        *",
-    "*   k    *",
+    "*   kkk  *",
+    "*   kkk  *",
     "*        *",
     "*        *",
     "*        *",
@@ -160,7 +160,35 @@ int atacar(void) {
     int dl; // direcao do ataque (frente do jogador)
     int dc; // direcao do ataque (frente do jogador)
 
-    if (arma == 3) {   // cajado: 8 celulas ao redor
+    if (arma == 1) {   // espada: retangulo 3x2 a frente
+    for (dl = 1; dl <= 2; dl++) {          // dl = profundidade (1 e 2 a frente)
+        for (dc = -1; dc <= 1; dc++) {     // dc = largura (3)
+            int alvo_linha, alvo_coluna;
+
+            if (jogador_dir == '^') {            // cima
+                alvo_linha  = jogador_linha - dl;
+                alvo_coluna = jogador_coluna + dc;
+            }
+            else if (jogador_dir == 'v') {       // baixo
+                alvo_linha  = jogador_linha + dl;
+                alvo_coluna = jogador_coluna + dc;
+            }
+            else if (jogador_dir == '<') {       // esquerda
+                alvo_linha  = jogador_linha + dc;
+                alvo_coluna = jogador_coluna - dl;
+            }
+            else {                               // direita '>'
+                alvo_linha  = jogador_linha + dc;
+                alvo_coluna = jogador_coluna + dl;
+            }
+
+            if (terreno[alvo_linha][alvo_coluna] == 'k')
+                terreno[alvo_linha][alvo_coluna] = ' ';
+        }
+    }
+}
+
+    else if (arma == 3) {   // cajado: 8 celulas ao redor
         for (dl = -1; dl <= 1; dl++) {
             for (dc = -1; dc <= 1; dc++) {
                 if (dl == 0 && dc == 0) continue;   // pula a propria celula
