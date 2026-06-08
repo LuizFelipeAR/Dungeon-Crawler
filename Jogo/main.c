@@ -447,8 +447,8 @@ int jogar_andar(int andar) {
     }
 }
 
-int main(void) {
-    srand(time(NULL));
+void jogar(void) {
+    vidas = 3;
     int andar = 0;
     while (andar <= 3) {
         carregar_andar(andar);
@@ -465,6 +465,76 @@ int main(void) {
     }
 
     if (andar > 3) printf("Voce zerou o jogo!\n");
-    
+
+}
+
+void tutorial(void) {
+    int escolha;
+    while (1) {
+        system("cls");
+        printf("========================================\n");
+        printf("            TUTORIAL DO JOGO\n");
+        printf("========================================\n");
+        printf("\nHISTORIA:\n");
+        printf("Voce e um aventureiro que desceu a uma masmorra\n");
+        printf("de tres andares para derrotar o terror que a habita.\n");
+        printf("\nCONTROLES:\n");
+        printf("W - Andar para cima\n");
+        printf("A - Andar para a esquerda\n");
+        printf("S - Andar para baixo\n");
+        printf("D - Andar para a direita\n");
+        printf("I - Interagir com objetos a frente\n");
+        printf("O - Atacar a frente\n");
+        printf("\nMECANICAS:\n");
+        printf("Voce tem 3 vidas. Espinho ou monstro tira 1 vida\n");
+        printf("e reinicia a fase. Sem vidas: GAME OVER.\n");
+        printf("\nSIMBOLOS:\n");
+        printf("^ v < > - Jogador (direcao)\n");
+        printf("* Parede | # Espinho | k Caixa | O Botao\n");
+        printf("D Porta fechada | @ Chave | = Porta aberta | L Escada\n");
+        printf("X Monstro Tipo 1 | Y Monstro Tipo 2 | Z Boss\n");
+        printf("\nDigite 1 para voltar ao menu: ");
+        scanf(" %d", &escolha);
+        if (escolha == 1) break;
+    }
+}
+
+int main() {
+    srand(time(NULL));
+    int opcao;
+    while (1) {
+        system("cls");
+        printf(" ____    _   _   _   _    ____   _____    ___    _   _ \n");
+        printf("|  _ \\  | | | | | \\ | |  / ___| | ____|  / _ \\  | \\ | |\n");
+        printf("| | | | | | | | |  \\| | | |  _  |  _|   | | | | |  \\| |\n");
+        printf("| |_| | | |_| | | |\\  | | |_| | | |___  | |_| | | |\\  |\n");
+        printf("|____/   \\___/  |_| \\_|  \\____| |_____|  \\___/  |_| \\_|\n\n");
+        printf("1. Jogar\n");
+        printf("2. Tutorial\n");
+        printf("3. Sair\n\n");
+        printf("Escolha uma opcao: ");
+        scanf(" %d", &opcao);
+
+        if (opcao == 1) {
+            jogar();
+            printf("\nDigite qualquer tecla e ENTER para voltar ao menu: ");
+            char t;
+            scanf(" %c", &t);
+        }
+        else if (opcao == 2) {
+            tutorial();
+        }
+        else if (opcao == 3) {
+            system("cls");
+            printf("Saindo do programa...\n");
+            break;
+        }
+        else {
+            printf("\nOpcao invalida!\n");
+            printf("Digite qualquer tecla e ENTER para continuar: ");
+            char t;
+            scanf(" %c", &t);
+        }
+    }
     return 0;
 }
