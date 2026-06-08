@@ -111,6 +111,18 @@ void carregar_monstros(int andar) {
     }
 }
 
+void atacar_monstros(int alvo_linha, int alvo_coluna) {
+    int m;
+    for (m = 0; m < num_monstros; m++) {
+        if (monstro_vivo[m] &&
+            monstro_linha[m] == alvo_linha &&
+            monstro_coluna[m] == alvo_coluna) {
+            monstro_vivo[m] = 0;   // mata o monstro
+            return;
+        }
+    }
+}
+
 
 // ALTERACAO: carregar_vila virou carregar_andar(int andar) -> escolhe o mapa
 void carregar_andar(int andar) {
@@ -147,7 +159,7 @@ void desenhar_mapa(void) { // ALTERACAO: desenhar_vila virou desenhar_mapa
     // Desenhar o Mapa
     system("cls");
     char mob;
-    
+
     for (int i = 0; i < altura; i++) {
         for (int j = 0; j < largura; j++) {
             mob = monstro_em(i, j);
@@ -271,6 +283,8 @@ int atacar(void) {
 
                 if (terreno[alvo_linha][alvo_coluna] == 'k')
                     terreno[alvo_linha][alvo_coluna] = ' ';
+
+                atacar_monstros(alvo_linha, alvo_coluna);
             }
         }
     }   
@@ -287,6 +301,8 @@ int atacar(void) {
 
             if (terreno[alvo_linha][alvo_coluna] == 'k')
                 terreno[alvo_linha][alvo_coluna] = ' ';
+
+            atacar_monstros(alvo_linha, alvo_coluna);
         }
     }
 
@@ -300,6 +316,8 @@ int atacar(void) {
 
                 if (terreno[alvo_linha][alvo_coluna] == 'k')
                     terreno[alvo_linha][alvo_coluna] = ' ';   // destroi a caixa
+
+                atacar_monstros(alvo_linha, alvo_coluna);
             }
         }
     }
