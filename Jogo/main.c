@@ -84,6 +84,7 @@ char jogador_dir = '>'; // Direcao que o jogador olha
 int arma = 0; // 0 = nenhuma ainda; 1 = espada, 2 = arco, 3 = cajado
 int tem_chave = 0;   // 0 = nao tem; 1 = tem uma chave`
 int vidas = 3;   // vidas da partida (NAO zerar no carregar_andar)
+int vida_boss = 4;
 
 int monstro_linha[MAX_MONSTROS];
 int monstro_coluna[MAX_MONSTROS];
@@ -106,21 +107,34 @@ void carregar_monstros(int andar) {
     }
     else if (andar == 3) {
         monstro_linha[0] = 3;  monstro_coluna[0] = 3;  monstro_tipo[0] = 2; monstro_vivo[0] = 1;
-        monstro_linha[1] = 10; monstro_coluna[1] = 15; monstro_tipo[1] = 2; monstro_vivo[1] = 1;
+        monstro_linha[1] = 12; monstro_coluna[1] = 12; monstro_tipo[1] = 3; monstro_vivo[1] = 1;
         num_monstros = 2;
+        vida_boss = 4;
     }
 }
 
-void atacar_monstros(int alvo_linha, int alvo_coluna) {
+int atacar_monstros(int alvo_linha, int alvo_coluna) {
     int m;
     for (m = 0; m < num_monstros; m++) {
         if (monstro_vivo[m] &&
             monstro_linha[m] == alvo_linha &&
             monstro_coluna[m] == alvo_coluna) {
-            monstro_vivo[m] = 0;   // mata o monstro
-            return;
+
+            if (monstro_tipo[m] == 3) {     // e o BOSS
+                vida_boss--;                // tira 1 de vida
+                if (vida_boss <= 0) {       // vida zerou?
+                    monstro_vivo[m] = 0;    // boss morre
+                    return 1;               // avisa: BOSS DERROTADO -> vitoria
+                }
+                return 0;                   // boss levou dano mas ainda vive
+            }
+            else {                          // monstro comum
+                monstro_vivo[m] = 0;        // morre na hora
+                return 0;
+            }
         }
     }
+    return 0;   // nao acertou nada
 }
 
 
@@ -149,7 +163,8 @@ char monstro_em(int i, int j) {
     for (m = 0; m < num_monstros; m++) {
         if (monstro_vivo[m] && monstro_linha[m] == i && monstro_coluna[m] == j) {
             if (monstro_tipo[m] == 1) return 'X';
-            else                      return 'Y';
+            else if (monstro_tipo[m] == 2) return 'Y';
+            else                           return 'Z';
         }
     }
     return ' ';   // nenhum monstro aqui
@@ -284,7 +299,8 @@ int atacar(void) {
                 if (terreno[alvo_linha][alvo_coluna] == 'k')
                     terreno[alvo_linha][alvo_coluna] = ' ';
 
-                atacar_monstros(alvo_linha, alvo_coluna);
+                if (atacar_monstros(alvo_linha, alvo_coluna) == 1)
+                    return 1;   // boss morreu -> vitoria
             }
         }
     }   
@@ -302,7 +318,8 @@ int atacar(void) {
             if (terreno[alvo_linha][alvo_coluna] == 'k')
                 terreno[alvo_linha][alvo_coluna] = ' ';
 
-            atacar_monstros(alvo_linha, alvo_coluna);
+            if (atacar_monstros(alvo_linha, alvo_coluna) == 1)
+                return 1;   // boss morreu -> vitoria
         }
     }
 
@@ -317,7 +334,8 @@ int atacar(void) {
                 if (terreno[alvo_linha][alvo_coluna] == 'k')
                     terreno[alvo_linha][alvo_coluna] = ' ';   // destroi a caixa
 
-                atacar_monstros(alvo_linha, alvo_coluna);
+                if (atacar_monstros(alvo_linha, alvo_coluna) == 1)
+                return 1;   // boss morreu -> vitoria
             }
         }
     }
@@ -348,6 +366,21 @@ int mover_monstros(void) {
             } else {
                 if (dc > 0) nova_coluna++;
                 else        nova_coluna--;
+            }
+        }
+
+        else if (monstro_tipo[i] == 3) {       // TIPO 3: BOSS (perseguidor rapido, 2 passos)
+            int passo; // Passo serve como um contador para o monstro andar 2 vezes
+            for (passo = 0; passo < 2; passo++) {
+                int dl = jogador_linha  - nova_linha;
+                int dc = jogador_coluna - nova_coluna;
+                if (abs(dl) >= abs(dc)) {
+                    if (dl > 0) nova_linha++;
+                    else        nova_linha--;
+                } else {
+                    if (dc > 0) nova_coluna++;
+                    else        nova_coluna--;
+                }
             }
         }
 
