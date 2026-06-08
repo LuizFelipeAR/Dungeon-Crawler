@@ -43,9 +43,9 @@ const char *MAPA_ANDAR2[15] = {
     "*   ###       *",
     "*             *",
     "*****D*********",
-    "*             *",
-    "*          ****",
-    "*@         D L*",
+    "*   *         *",
+    "*   *      ****",
+    "*@  *      D L*",
     "***************"   
 };
 
@@ -212,7 +212,8 @@ int mover(int dx, int dy, char dir) {
         terreno[novo_linha][novo_coluna] != 'N' &&
         terreno[novo_linha][novo_coluna] != 'L' &&
         terreno[novo_linha][novo_coluna] != 'k' &&
-        terreno[novo_linha][novo_coluna] != 'D') {
+        terreno[novo_linha][novo_coluna] != 'D' &&
+        terreno[novo_linha][novo_coluna] != 'O') {
         jogador_coluna = novo_coluna;
         jogador_linha = novo_linha;
 
@@ -271,7 +272,7 @@ int interagir(void) { // ALTERACAO: era void, agora retorna int (avisa se desceu
     }
 
     else if (terreno[frente_linha][frente_coluna] == 'O') {   // botao
-        terreno[11][13] = ' ';   // abre a barreira (parede em [6][10] vira espaco)
+        terreno[12][4] = ' ';   // abre a barreira (parede em [6][10] vira espaco)
         return 0;
     }
 
