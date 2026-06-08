@@ -113,14 +113,13 @@ Ao perder todas as vidas, o jogo retorna ao menu principal através da tela de G
 ## 📂 Estrutura do Projeto
 
 ```text
-DungeonCrawler/
+Dungeon-Crawler/
 │
-├── src/
-├── include/
-├── assets/
-├── docs/
-├── README.md
-└── main.c
+├── .vscode/
+├── Jogo/
+│   └── Arquivo executável do Jogo/
+│       └── main.exe
+└── README.md
 ```
 
 ---
