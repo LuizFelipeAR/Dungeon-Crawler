@@ -38,14 +38,14 @@ const char *MAPA_ANDAR2[15] = {
     "*             *",
     "*             *",
     "*         #   *",
-    "*        ##   *",
+    "*        ##  @*",
     "*         #   *",
     "*   ###       *",
-    "*            @*",
-    "*****D*********",
     "*             *",
-    "*          ****",
-    "*@         D L*",
+    "*****D*********",
+    "*   *         *",
+    "*   *      ****",
+    "*@  *      D L*",
     "***************"   
 };
 
@@ -64,16 +64,16 @@ const char *MAPA_ANDAR3[25] = {
     "*         *             *",
     "*         ***************",
     "*                       *",
-    "*                       *",
+    "*                 @     *",
     "*        ###            *",
-    "*              ##       *",
+    "*                ##     *",
+    "*            #          *",
+    "*****D*******************",
     "*                       *",
     "*                       *",
-    "* ##           ******D***",
-    "*              *        *",
-    "*  @   #       *        *",
-    "*       ##     *    L   *",
-    "*              *        *",
+    "*                       *",
+    "*                       *",
+    "*                       *",
     "*************************"
 };
 
@@ -97,18 +97,20 @@ void carregar_monstros(int andar) {
 
     if (andar == 1) {
         monstro_linha[0] = 3; monstro_coluna[0] = 7; monstro_tipo[0] = 1; monstro_vivo[0] = 1;
-        monstro_linha[1] = 7; monstro_coluna[1] = 3; monstro_tipo[1] = 1; monstro_vivo[1] = 1;
+        monstro_linha[1] = 5; monstro_coluna[1] = 3; monstro_tipo[1] = 1; monstro_vivo[1] = 1;
         num_monstros = 2;
     }
     else if (andar == 2) {
-        monstro_linha[0] = 2; monstro_coluna[0] = 2;  monstro_tipo[0] = 1; monstro_vivo[0] = 1;
-        monstro_linha[1] = 8; monstro_coluna[1] = 10; monstro_tipo[1] = 2; monstro_vivo[1] = 1;
-        num_monstros = 2;
+        monstro_linha[0] = 4; monstro_coluna[0] = 6;  monstro_tipo[0] = 1; monstro_vivo[0] = 1;
+        monstro_linha[1] = 7; monstro_coluna[1] = 4;  monstro_tipo[1] = 2; monstro_vivo[1] = 1;
+        monstro_linha[2] = 11; monstro_coluna[2] = 6;  monstro_tipo[2] = 1; monstro_vivo[2] = 1;
+        num_monstros = 3;
     }
     else if (andar == 3) {
-        monstro_linha[0] = 3;  monstro_coluna[0] = 3;  monstro_tipo[0] = 2; monstro_vivo[0] = 1;
-        monstro_linha[1] = 12; monstro_coluna[1] = 12; monstro_tipo[1] = 3; monstro_vivo[1] = 1;
-        num_monstros = 2;
+        monstro_linha[0] = 5;  monstro_coluna[0] = 10;  monstro_tipo[0] = 2; monstro_vivo[0] = 1;
+        monstro_linha[1] = 14; monstro_coluna[1] = 8;  monstro_tipo[1] = 2; monstro_vivo[1] = 1;
+        monstro_linha[2] = 21; monstro_coluna[2] = 12; monstro_tipo[2] = 3; monstro_vivo[2] = 1;
+        num_monstros = 3;
         vida_boss = 4;
     }
 }
@@ -210,7 +212,8 @@ int mover(int dx, int dy, char dir) {
         terreno[novo_linha][novo_coluna] != 'N' &&
         terreno[novo_linha][novo_coluna] != 'L' &&
         terreno[novo_linha][novo_coluna] != 'k' &&
-        terreno[novo_linha][novo_coluna] != 'D') {
+        terreno[novo_linha][novo_coluna] != 'D' &&
+        terreno[novo_linha][novo_coluna] != 'O') {
         jogador_coluna = novo_coluna;
         jogador_linha = novo_linha;
 
@@ -269,7 +272,7 @@ int interagir(void) { // ALTERACAO: era void, agora retorna int (avisa se desceu
     }
 
     else if (terreno[frente_linha][frente_coluna] == 'O') {   // botao
-        terreno[6][10] = ' ';   // abre a barreira (parede em [6][10] vira espaco)
+        terreno[12][4] = ' ';   // abre a barreira (parede em [6][10] vira espaco)
         return 0;
     }
 
@@ -375,17 +378,19 @@ int mover_monstros(void) {
             }
         }
 
-        else if (monstro_tipo[i] == 3) {       // TIPO 3: BOSS (perseguidor rapido, 2 passos)
-            int passo; // Passo serve como um contador para o monstro andar 2 vezes
-            for (passo = 0; passo < 2; passo++) {
-                int dl = jogador_linha  - nova_linha;
-                int dc = jogador_coluna - nova_coluna;
-                if (abs(dl) >= abs(dc)) {
-                    if (dl > 0) nova_linha++;
-                    else        nova_linha--;
-                } else {
-                    if (dc > 0) nova_coluna++;
-                    else        nova_coluna--;
+        else if (monstro_tipo[i] == 3) {       // BOSS: so persegue quando o jogador entra na arena
+            if (jogador_linha >= 19) {         // 19 = primeira linha da arena
+                int passo;
+                for (passo = 0; passo < 2; passo++) {
+                    int dl = jogador_linha  - nova_linha;
+                    int dc = jogador_coluna - nova_coluna;
+                    if (abs(dl) >= abs(dc)) {
+                        if (dl > 0) nova_linha++;
+                        else        nova_linha--;
+                    } else {
+                        if (dc > 0) nova_coluna++;
+                        else        nova_coluna--;
+                    }
                 }
             }
         }
@@ -442,8 +447,8 @@ int jogar_andar(int andar) {
     }
 }
 
-int main(void) {
-    srand(time(NULL));
+void jogar(void) {
+    vidas = 3;
     int andar = 0;
     while (andar <= 3) {
         carregar_andar(andar);
@@ -460,6 +465,76 @@ int main(void) {
     }
 
     if (andar > 3) printf("Voce zerou o jogo!\n");
-    
+
+}
+
+void tutorial(void) {
+    int escolha;
+    while (1) {
+        system("cls");
+        printf("========================================\n");
+        printf("            TUTORIAL DO JOGO\n");
+        printf("========================================\n");
+        printf("\nHISTORIA:\n");
+        printf("Voce e um aventureiro que desceu a uma masmorra\n");
+        printf("de tres andares para derrotar o terror que a habita.\n");
+        printf("\nCONTROLES:\n");
+        printf("W - Andar para cima\n");
+        printf("A - Andar para a esquerda\n");
+        printf("S - Andar para baixo\n");
+        printf("D - Andar para a direita\n");
+        printf("I - Interagir com objetos a frente\n");
+        printf("O - Atacar a frente\n");
+        printf("\nMECANICAS:\n");
+        printf("Voce tem 3 vidas. Espinho ou monstro tira 1 vida\n");
+        printf("e reinicia a fase. Sem vidas: GAME OVER.\n");
+        printf("\nSIMBOLOS:\n");
+        printf("^ v < > - Jogador (direcao)\n");
+        printf("* Parede | # Espinho | k Caixa | O Botao\n");
+        printf("D Porta fechada | @ Chave | = Porta aberta | L Escada\n");
+        printf("X Monstro Tipo 1 | Y Monstro Tipo 2 | Z Boss\n");
+        printf("\nDigite 1 para voltar ao menu: ");
+        scanf(" %d", &escolha);
+        if (escolha == 1) break;
+    }
+}
+
+int main() {
+    srand(time(NULL));
+    int opcao;
+    while (1) {
+        system("cls");
+        printf(" ____    _   _   _   _    ____   _____    ___    _   _ \n");
+        printf("|  _ \\  | | | | | \\ | |  / ___| | ____|  / _ \\  | \\ | |\n");
+        printf("| | | | | | | | |  \\| | | |  _  |  _|   | | | | |  \\| |\n");
+        printf("| |_| | | |_| | | |\\  | | |_| | | |___  | |_| | | |\\  |\n");
+        printf("|____/   \\___/  |_| \\_|  \\____| |_____|  \\___/  |_| \\_|\n\n");
+        printf("1. Jogar\n");
+        printf("2. Tutorial\n");
+        printf("3. Sair\n\n");
+        printf("Escolha uma opcao: ");
+        scanf(" %d", &opcao);
+
+        if (opcao == 1) {
+            jogar();
+            printf("\nDigite qualquer tecla e ENTER para voltar ao menu: ");
+            char t;
+            scanf(" %c", &t);
+        }
+        else if (opcao == 2) {
+            tutorial();
+        }
+        else if (opcao == 3) {
+            system("cls");
+            printf("Saindo do programa...\n");
+            break;
+        }
+        else {
+            printf("\nOpcao invalida!\n");
+            printf("Digite qualquer tecla e ENTER para continuar: ");
+            char t;
+            scanf(" %c", &t);
+        }
+    }
     return 0;
 }
