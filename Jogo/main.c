@@ -21,7 +21,7 @@ const char *MAPA_VILA[10] = {
 const char *MAPA_ANDAR1[10] = {
     "**********",
     "*    kkk *",
-    "*    kkk *",
+    "*     kk *",
     "*        *",
     "*      # *",
     "*@       *",
@@ -264,6 +264,12 @@ int interagir(void) { // ALTERACAO: era void, agora retorna int (avisa se desceu
             terreno[frente_linha][frente_coluna] = '=';   // abre a porta
             tem_chave = 0;                                // consome a chave
         }
+
+        return 0;
+    }
+
+    else if (terreno[frente_linha][frente_coluna] == 'O') {   // botao
+        terreno[6][10] = ' ';   // abre a barreira (parede em [6][10] vira espaco)
         return 0;
     }
 
