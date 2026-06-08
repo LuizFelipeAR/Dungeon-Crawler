@@ -132,7 +132,9 @@ Baixe o arquivo "main.exe" na pasta de Arquivo executavel do Jogo, habilite a pe
 
 ## 📸 Capturas de Tela
 
-six seven
+### Screenshot do Jogo
+
+![Screenshot do jogo](imagens/image.png)
 
 ---
 
