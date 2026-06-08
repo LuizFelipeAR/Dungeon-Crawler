@@ -146,8 +146,8 @@ char monstro_em(int i, int j) {
 void desenhar_mapa(void) { // ALTERACAO: desenhar_vila virou desenhar_mapa
     // Desenhar o Mapa
     system("cls");
-
     char mob;
+    
     for (int i = 0; i < altura; i++) {
         for (int j = 0; j < largura; j++) {
             mob = monstro_em(i, j);
