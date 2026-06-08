@@ -97,18 +97,20 @@ void carregar_monstros(int andar) {
 
     if (andar == 1) {
         monstro_linha[0] = 3; monstro_coluna[0] = 7; monstro_tipo[0] = 1; monstro_vivo[0] = 1;
-        monstro_linha[1] = 7; monstro_coluna[1] = 3; monstro_tipo[1] = 1; monstro_vivo[1] = 1;
+        monstro_linha[1] = 5; monstro_coluna[1] = 3; monstro_tipo[1] = 1; monstro_vivo[1] = 1;
         num_monstros = 2;
     }
     else if (andar == 2) {
-        monstro_linha[0] = 2; monstro_coluna[0] = 2;  monstro_tipo[0] = 1; monstro_vivo[0] = 1;
-        monstro_linha[1] = 8; monstro_coluna[1] = 10; monstro_tipo[1] = 2; monstro_vivo[1] = 1;
-        num_monstros = 2;
+        monstro_linha[0] = 4; monstro_coluna[0] = 6;  monstro_tipo[0] = 1; monstro_vivo[0] = 1;
+        monstro_linha[1] = 7; monstro_coluna[1] = 4;  monstro_tipo[1] = 2; monstro_vivo[1] = 1;
+        monstro_linha[2] = 11; monstro_coluna[2] = 6;  monstro_tipo[2] = 1; monstro_vivo[2] = 1;
+        num_monstros = 3;
     }
     else if (andar == 3) {
-        monstro_linha[0] = 3;  monstro_coluna[0] = 3;  monstro_tipo[0] = 2; monstro_vivo[0] = 1;
-        monstro_linha[1] = 12; monstro_coluna[1] = 12; monstro_tipo[1] = 3; monstro_vivo[1] = 1;
-        num_monstros = 2;
+        monstro_linha[0] = 5;  monstro_coluna[0] = 10;  monstro_tipo[0] = 2; monstro_vivo[0] = 1;
+        monstro_linha[1] = 14; monstro_coluna[1] = 8;  monstro_tipo[1] = 2; monstro_vivo[1] = 1;
+        monstro_linha[2] = 21; monstro_coluna[2] = 12; monstro_tipo[2] = 3; monstro_vivo[2] = 1;
+        num_monstros = 3;
         vida_boss = 4;
     }
 }
@@ -269,7 +271,7 @@ int interagir(void) { // ALTERACAO: era void, agora retorna int (avisa se desceu
     }
 
     else if (terreno[frente_linha][frente_coluna] == 'O') {   // botao
-        terreno[6][10] = ' ';   // abre a barreira (parede em [6][10] vira espaco)
+        terreno[11][13] = ' ';   // abre a barreira (parede em [6][10] vira espaco)
         return 0;
     }
 
@@ -375,17 +377,19 @@ int mover_monstros(void) {
             }
         }
 
-        else if (monstro_tipo[i] == 3) {       // TIPO 3: BOSS (perseguidor rapido, 2 passos)
-            int passo; // Passo serve como um contador para o monstro andar 2 vezes
-            for (passo = 0; passo < 2; passo++) {
-                int dl = jogador_linha  - nova_linha;
-                int dc = jogador_coluna - nova_coluna;
-                if (abs(dl) >= abs(dc)) {
-                    if (dl > 0) nova_linha++;
-                    else        nova_linha--;
-                } else {
-                    if (dc > 0) nova_coluna++;
-                    else        nova_coluna--;
+        else if (monstro_tipo[i] == 3) {       // BOSS: so persegue quando o jogador entra na arena
+            if (jogador_linha >= 19) {         // 19 = primeira linha da arena
+                int passo;
+                for (passo = 0; passo < 2; passo++) {
+                    int dl = jogador_linha  - nova_linha;
+                    int dc = jogador_coluna - nova_coluna;
+                    if (abs(dl) >= abs(dc)) {
+                        if (dl > 0) nova_linha++;
+                        else        nova_linha--;
+                    } else {
+                        if (dc > 0) nova_coluna++;
+                        else        nova_coluna--;
+                    }
                 }
             }
         }
