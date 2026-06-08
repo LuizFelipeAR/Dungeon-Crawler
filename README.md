@@ -127,7 +127,7 @@ DungeonCrawler/
 
 ## 🚀 Como Executar
 
-six seven
+Baixe o arquivo "main.exe" na pasta de Arquivo executavel do Jogo, habilite a permissão do windwos para aceitar autores desconhecidos e divirta-se!
 
 ---
 
