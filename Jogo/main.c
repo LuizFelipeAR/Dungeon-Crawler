@@ -5,7 +5,8 @@
 #define MAX 25
 #define MAX_MONSTROS 10
 
-const char *MAPA_VILA[10] = {
+
+const char *MAPA_VILA[10] = { //mapa da vila em um Char que guarda o desenho todo
     "**********",
     "*        *",
     "*        *",
@@ -18,7 +19,7 @@ const char *MAPA_VILA[10] = {
     "**********"
 };
 
-const char *MAPA_ANDAR1[10] = {
+const char *MAPA_ANDAR1[10] = { //mapa do andar 1 um Char que guarda o desenho todo
     "**********",
     "*    kkk *",
     "*     kk *",
@@ -31,7 +32,7 @@ const char *MAPA_ANDAR1[10] = {
     "**********"
 };
 
-const char *MAPA_ANDAR2[15] = {
+const char *MAPA_ANDAR2[15] = { //mapa do andar 2 em um Char que guarda o desenho todo
     "***************",
     "*       ##  O *",
     "*             *",
@@ -49,7 +50,7 @@ const char *MAPA_ANDAR2[15] = {
     "***************"   
 };
 
-const char *MAPA_ANDAR3[25] = {
+const char *MAPA_ANDAR3[25] = { //mapa do andar 3 em um Char que guarda o desenho todo
     "*************************",
     "*                 ##    *",
     "*                       *",
@@ -81,8 +82,8 @@ char terreno[MAX][MAX];
 int altura, largura;
 int jogador_linha = 1, jogador_coluna = 1; // Posicao do Jogador
 char jogador_dir = '>'; // Direcao que o jogador olha
-int arma = 0; // 0 = nenhuma ainda; 1 = espada, 2 = arco, 3 = cajado
-int tem_chave = 0;   // 0 = nao tem; 1 = tem uma chave`
+int arma = 0; // 0 = nenhuma ainda, 1 = espada, 2 = arco, 3 = cajado
+int tem_chave = 0;   // 0 = nao tem, 1 = tem uma chave`
 int vidas = 3;   // vidas da partida (NAO zerar no carregar_andar)
 int vida_boss = 4;
 
@@ -92,7 +93,7 @@ int monstro_tipo[MAX_MONSTROS];
 int monstro_vivo[MAX_MONSTROS];
 int num_monstros = 0;
 
-void carregar_monstros(int andar) {
+void carregar_monstros(int andar) { //define a posicao de comeco dos monstros e cada detalhe dos monstros de cada andar
     num_monstros = 0;
 
     if (andar == 1) {
@@ -481,7 +482,7 @@ void jogar(void) {
 
 }
 
-void tutorial(void) {
+void tutorial(void) { //funcao que chama o tutorial do jogo
     int escolha;
     while (1) {
         system("cls");

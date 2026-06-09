@@ -113,27 +113,28 @@ Ao perder todas as vidas, o jogo retorna ao menu principal através da tela de G
 ## 📂 Estrutura do Projeto
 
 ```text
-DungeonCrawler/
+Dungeon-Crawler/
 │
-├── src/
-├── include/
-├── assets/
-├── docs/
-├── README.md
-└── main.c
+├── .vscode/
+├── Jogo/
+│   └── Arquivo executável do Jogo/
+│       └── main.exe
+└── README.md
 ```
 
 ---
 
 ## 🚀 Como Executar
 
-six seven
+Baixe o arquivo "main.exe" na pasta de Arquivo executavel do Jogo, habilite a permissão do windwos para aceitar autores desconhecidos e divirta-se!
 
 ---
 
 ## 📸 Capturas de Tela
 
-six seven
+### Screenshot do Jogo
+
+![Screenshot do jogo](imagens/image.png)
 
 ---
 
