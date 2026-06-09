@@ -15,7 +15,7 @@ O jogador inicia sua jornada em uma pequena vila, onde deverá escolher uma arma
 ## 👨‍💻 Desenvolvedores
 
 
-* Ricardo Kenji Hidaka - @RicardoKenjiHidakaReis
+* Ricardo Kenji Hidaka dos Reis - @RicardoKenjiHidakaReis
 * Luiz Felipe Araújo dos Reis - @LuizFelipeAR
 * Pedro Arthur Farias de Souza - @pedroarthurfsouza-cpu
 
