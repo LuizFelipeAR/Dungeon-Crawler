@@ -164,7 +164,8 @@ Ferramentas de IA generativa foram utilizadas como apoio para:
 
 ## 🏆 Diferenciais do Projeto
 
-six seven?
+Todo o projeto foi desenvolvido em três sistemas operacionais distintos.
+A parte majoritária do projeto foi construída no sistema Windows 🪟, porém o código foi testado e rodado também nos sistemas operacionais Linux 🐧 e MacOS 🍎.
 
 ---
 
